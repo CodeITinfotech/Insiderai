@@ -1,4 +1,4 @@
-# AI Agent Command Center — SPEC.md
+# Insider AI — SPEC.md
 
 ## Concept & Vision
 
