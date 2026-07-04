@@ -19,11 +19,11 @@
             --bg-panel: #12121a;
             --bg-card: #1a1a24;
             --bg-elevated: #22222e;
-            --border-glow: #00f0ff;
+            --border-glow: #ff3333;
             --border-subtle: #2a2a3a;
-            --accent-primary: #00f0ff;
-            --accent-secondary: #ff006e;
-            --accent-tertiary: #8b5cf6;
+            --accent-primary: #ff3333;
+            --accent-secondary: #ff5555;
+            --accent-tertiary: #ff6666;
             --text-primary: #e8e8f0;
             --text-secondary: #8888a0;
             --text-muted: #55556a;
@@ -1270,12 +1270,12 @@
 
         function getAvatarGradient(name) {
             const gradients = [
-                'linear-gradient(135deg, #00f0ff, #8b5cf6)',
-                'linear-gradient(135deg, #ff006e, #8b5cf6)',
-                'linear-gradient(135deg, #00ff88, #00f0ff)',
-                'linear-gradient(135deg, #ff006e, #ff8800)',
-                'linear-gradient(135deg, #8b5cf6, #ff006e)',
-                'linear-gradient(135deg, #00f0ff, #00ff88)'
+                'linear-gradient(135deg, #ff3333, #ff5555)',
+                'linear-gradient(135deg, #ff4444, #ff6666)',
+                'linear-gradient(135deg, #ff5555, #ff3333)',
+                'linear-gradient(135deg, #ff6666, #ff4444)',
+                'linear-gradient(135deg, #ff3333, #ff6666)',
+                'linear-gradient(135deg, #ff4444, #ff5555)'
             ];
             const index = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % gradients.length;
             return gradients[index];
