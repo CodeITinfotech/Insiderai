@@ -1152,30 +1152,14 @@
             </div>
         </header>
 
-        <main class="main">
-            <aside class="sidebar" id="sidebar">
-                <div class="sidebar-header">
-                    <div class="sidebar-title">Agents</div>
-                    <button class="add-agent-btn" id="addAgentBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Add Agent
-                    </button>
-                </div>
-                <div class="agent-list" id="agentList">
-                    <!-- Agent cards will be rendered here -->
-                </div>
-            </aside>
-
-            <section class="chat-area" id="chatArea">
+        <main class="main" style="display: block;">
+            <section class="chat-area" id="chatArea" style="width: 100%;">
                 <div class="chat-placeholder" id="chatPlaceholder">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
-                    <h3>Select an Agent</h3>
-                    <p>Choose an agent from the sidebar to start chatting</p>
+                    <h3>Welcome to Insider AI</h3>
+                    <p>Click the Settings icon to configure your agents</p>
                 </div>
                 <div id="chatContent" style="display: none; flex: 1; display: none; flex-direction: column;">
                     <div class="chat-header">
@@ -1536,7 +1520,6 @@
         function selectAgent(id) {
             state.selectedAgentId = id;
             saveToStorage();
-            renderAgentList();
             renderChat();
             
             // Enable chat input
@@ -1683,7 +1666,6 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             
             state.isLoading = true;
-            renderAgentList();
 
             try {
                 // Prepare messages for API
@@ -1785,7 +1767,6 @@
 
             state.isLoading = false;
             saveToStorage();
-            renderAgentList();
             renderChat();
         }
 
@@ -1863,21 +1844,20 @@
         // Initialize
         loadFromStorage();
         
-        // Add default OpenHands agent if no agents exist
+        // Add default OpenAI agent if no agents exist
         if (state.agents.length === 0) {
-            const openHandsAgent = {
+            const openAIAgent = {
                 id: generateId(),
-                name: 'OpenHands',
-                apiKey: '',
-                apiEndpoint: 'https://app.all-hands.dev/api/chat',
+                name: 'OpenAI GPT-4',
+                apiKey: 'YOUR_API_KEY_HERE',
+                apiEndpoint: 'https://api.openai.com/v1/responses',
                 proxyEndpoint: ''
             };
-            state.agents.push(openHandsAgent);
-            state.settingsAgents.push(openHandsAgent);
+            state.agents.push(openAIAgent);
+            state.settingsAgents.push(openAIAgent);
             saveToStorage();
         }
         
-        renderAgentList();
         renderChat();
 
         // Set initial chat input state
