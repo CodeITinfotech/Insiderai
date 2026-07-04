@@ -1703,14 +1703,21 @@
                         history: messages.slice(0, -1)
                     };
                     responseFormat = 'openhands';
+                } else if (endpoint.includes('v1/responses')) {
+                    // OpenAI Responses API format
+                    requestBody = {
+                        model: 'gpt-4o',
+                        input: messages[messages.length - 1]?.content || ''
+                    };
+                    responseFormat = 'openai_responses';
                 } else {
-                    // Standard OpenAI-compatible format
+                    // Standard OpenAI Chat format
                     requestBody = {
                         model: 'gpt-4',
                         messages: messages,
                         stream: false
                     };
-                    responseFormat = 'openai';
+                    responseFormat = 'openai_chat';
                 }
                 
                 const response = await fetch(endpoint, {
@@ -1736,7 +1743,14 @@
                 let assistantContent;
                 if (responseFormat === 'openhands') {
                     assistantContent = data.response || data.message || data.content || JSON.stringify(data);
+                } else if (responseFormat === 'openai_responses') {
+                    // OpenAI Responses API format
+                    assistantContent = data.output?.[0]?.content?.[0]?.text || 
+                                       data.output_text || 
+                                       data.choices?.[0]?.message?.content ||
+                                       JSON.stringify(data);
                 } else {
+                    // Standard OpenAI Chat format
                     assistantContent = data.choices[0]?.message?.content || 'No response received.';
                 }
 
