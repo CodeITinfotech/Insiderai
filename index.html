@@ -1173,7 +1173,7 @@
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                     </svg>
                     <h3>Select an Agent</h3>
-                    <p>Choose an agent from the sidebar or add a new one to start chatting</p>
+                    <p>Choose an agent from the sidebar to start chatting</p>
                 </div>
                 <div id="chatContent" style="display: none; flex: 1; display: none; flex-direction: column;">
                     <div class="chat-header">
@@ -1340,7 +1340,7 @@
                             <path d="M2 17l10 5 10-5"></path>
                             <path d="M2 12l10 5 10-5"></path>
                         </svg>
-                        <p>No agents configured.<br>Click "Add Agent" to get started.</p>
+                        <p>No agents configured.<br>Click the Settings icon to add agents.</p>
                     </div>
                 `;
                 return;
@@ -1791,10 +1791,7 @@
         document.getElementById('closeSettingsBtn').addEventListener('click', closeSettings);
         document.getElementById('cancelSettingsBtn').addEventListener('click', closeSettings);
         document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
-        document.getElementById('addAgentBtn').addEventListener('click', () => {
-            addNewAgent();
-            openSettings();
-        });
+        document.getElementById('addAgentBtn').addEventListener('click', openSettings);
         document.getElementById('addAgentInSettingsBtn').addEventListener('click', addNewAgent);
         document.getElementById('clearChatBtn').addEventListener('click', clearChat);
         document.getElementById('mobileToggle').addEventListener('click', () => {
