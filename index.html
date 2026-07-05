@@ -1456,6 +1456,7 @@
                 state.agents = parsed.agents || [];
                 state.selectedAgentId = parsed.selectedAgentId;
                 state.conversations = parsed.conversations || {};
+                state.settingsAgents = JSON.parse(JSON.stringify(state.agents));
             }
         }
 
