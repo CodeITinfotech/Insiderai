@@ -32,6 +32,23 @@
             --error: #ff4466;
         }
 
+        [data-theme="light"] {
+            --bg-deep: #f5f5f5;
+            --bg-panel: #ffffff;
+            --bg-card: #ffffff;
+            --bg-elevated: #f0f0f0;
+            --border-glow: #ff3333;
+            --border-subtle: #e0e0e0;
+            --accent-primary: #ff3333;
+            --accent-secondary: #ff5555;
+            --accent-tertiary: #ff6666;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --success: #00aa55;
+            --error: #dd3333;
+        }
+
         html, body {
             height: 100%;
             overflow: hidden;
@@ -425,7 +442,7 @@
             gap: 8px;
         }
 
-        .clear-chat-btn {
+        .clear-chat-btn, .export-chat-btn {
             padding: 8px 16px;
             background: transparent;
             border: 1px solid var(--border-subtle);
@@ -445,9 +462,25 @@
             color: var(--error);
         }
 
-        .clear-chat-btn svg {
+        .export-chat-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .clear-chat-btn svg, .export-chat-btn svg {
             width: 14px;
             height: 14px;
+        }
+
+        .token-counter {
+            position: absolute;
+            bottom: 8px;
+            right: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 4px 8px;
+            background: var(--bg-panel);
+            border-radius: 4px;
         }
 
         .chat-messages {
@@ -574,6 +607,32 @@
             color: var(--text-muted);
         }
 
+        .copy-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.2s, color 0.2s;
+        }
+
+        .copy-btn:hover {
+            color: var(--accent-primary);
+        }
+
+        .message:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
         .message-bubble {
             padding: 14px 18px;
             border-radius: 16px;
@@ -600,6 +659,30 @@
             background: rgba(255, 68, 102, 0.2);
             border-color: var(--error);
             color: var(--error);
+        }
+
+        .code-block {
+            background: var(--bg-deep);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 8px 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .code-block code {
+            color: var(--text-primary);
+        }
+
+        .inline-code {
+            background: var(--bg-elevated);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-primary);
         }
 
         .typing-indicator {
@@ -918,6 +1001,30 @@
             border-color: var(--error);
         }
 
+        .form-select {
+            width: 100%;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238888a0' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+        }
+
         .form-error {
             font-size: 11px;
             color: var(--error);
@@ -980,7 +1087,13 @@
             padding: 20px 24px;
             border-top: 1px solid var(--border-subtle);
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-footer-left, .modal-footer-right {
+            display: flex;
             gap: 12px;
         }
 
@@ -993,6 +1106,14 @@
             letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 11px;
         }
 
         .btn-primary {
@@ -1143,6 +1264,19 @@
                 <span class="logo-text">Insider AI</span>
             </div>
             <div class="header-actions">
+                <button class="icon-btn" id="themeToggle" title="Toggle Theme">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
                 <button class="icon-btn" id="settingsBtn" title="Settings">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -1171,7 +1305,15 @@
                             </div>
                         </div>
                         <div class="chat-actions">
-                            <button class="clear-chat-btn" id="clearChatBtn">
+                            <button class="export-chat-btn" id="exportChatBtn" title="Export Chat">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Export
+                            </button>
+                            <button class="clear-chat-btn" id="clearChatBtn" title="Clear Chat">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="3 6 5 6 21 6"></polyline>
                                     <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -1183,6 +1325,7 @@
                     <div class="chat-messages" id="chatMessages">
                         <!-- Messages will be rendered here -->
                     </div>
+                    <div class="token-counter" id="tokenCounter"></div>
                     <div class="chat-input-area">
                         <div class="chat-input-wrapper">
                             <textarea class="chat-input" id="chatInput" placeholder="Type your message..." rows="1" disabled></textarea>
@@ -1230,8 +1373,29 @@
                 </button>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelSettingsBtn">Cancel</button>
-                <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+                <div class="modal-footer-left">
+                    <button class="btn btn-secondary btn-sm" id="importAgentsBtn" title="Import Agents">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Import
+                    </button>
+                    <button class="btn btn-secondary btn-sm" id="exportAgentsBtn" title="Export Agents">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export
+                    </button>
+                    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+                </div>
+                <div class="modal-footer-right">
+                    <button class="btn btn-secondary" id="cancelSettingsBtn">Cancel</button>
+                    <button class="btn btn-primary" id="saveSettingsBtn">Save Changes</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1401,6 +1565,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="form-label">Model (Optional)</label>
+                        <select class="form-select agent-model-input" data-id="${agent.id}">
+                            <option value="">Auto-detect</option>
+                            <option value="gpt-4o" ${agent.model === 'gpt-4o' ? 'selected' : ''}>GPT-4o</option>
+                            <option value="gpt-4o-mini" ${agent.model === 'gpt-4o-mini' ? 'selected' : ''}>GPT-4o Mini</option>
+                            <option value="gpt-4-turbo" ${agent.model === 'gpt-4-turbo' ? 'selected' : ''}>GPT-4 Turbo</option>
+                            <option value="gpt-4" ${agent.model === 'gpt-4' ? 'selected' : ''}>GPT-4</option>
+                            <option value="gpt-3.5-turbo" ${agent.model === 'gpt-3.5-turbo' ? 'selected' : ''}>GPT-3.5 Turbo</option>
+                            <option value="claude-3-5-sonnet" ${agent.model === 'claude-3-5-sonnet' ? 'selected' : ''}>Claude 3.5 Sonnet</option>
+                            <option value="claude-3-opus" ${agent.model === 'claude-3-opus' ? 'selected' : ''}>Claude 3 Opus</option>
+                            <option value="custom">Custom...</option>
+                        </select>
+                        <input type="text" class="form-input agent-custom-model-input" data-id="${agent.id}" value="${agent.model && !['gpt-4o','gpt-4o-mini','gpt-4-turbo','gpt-4','gpt-3.5-turbo','claude-3-5-sonnet','claude-3-opus'].includes(agent.model) ? agent.model : ''}" placeholder="Enter custom model name" style="margin-top: 8px; ${agent.model && !['gpt-4o','gpt-4o-mini','gpt-4-turbo','gpt-4','gpt-3.5-turbo','claude-3-5-sonnet','claude-3-opus'].includes(agent.model) ? '' : 'display: none;'}">
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">API Endpoint (Optional)</label>
                         <input type="text" class="form-input agent-endpoint-input" data-id="${agent.id}" value="${agent.apiEndpoint || ''}" placeholder="https://api.openai.com/v1/chat/completions">
                     </div>
@@ -1450,6 +1629,25 @@
                             agent.apiEndpoint = input.value;
                         } else if (input.classList.contains('agent-proxy-input')) {
                             agent.proxyEndpoint = input.value;
+                        } else if (input.classList.contains('agent-custom-model-input')) {
+                            agent.model = input.value;
+                        }
+                    }
+                });
+            });
+
+            // Model dropdown handlers
+            container.querySelectorAll('.agent-model-input').forEach(select => {
+                select.addEventListener('change', () => {
+                    const agent = state.settingsAgents.find(a => a.id === select.dataset.id);
+                    const customInput = document.querySelector(`.agent-custom-model-input[data-id="${select.dataset.id}"]`);
+                    if (agent && customInput) {
+                        if (select.value === 'custom') {
+                            customInput.style.display = 'block';
+                            customInput.focus();
+                        } else {
+                            customInput.style.display = 'none';
+                            agent.model = select.value;
                         }
                     }
                 });
@@ -1475,7 +1673,8 @@
             document.getElementById('chatAvatar').style.background = getAvatarGradient(agent.name);
             document.getElementById('chatAvatar').textContent = getInitials(agent.name);
             document.getElementById('chatName').textContent = agent.name;
-            document.getElementById('chatModel').textContent = agent.apiEndpoint ? new URL(agent.apiEndpoint).hostname : 'OpenAI Compatible';
+            const displayModel = agent.model || (agent.apiEndpoint ? new URL(agent.apiEndpoint).hostname : 'OpenAI Compatible');
+            document.getElementById('chatModel').textContent = displayModel;
 
             const messages = state.conversations[state.selectedAgentId] || [];
             const messagesContainer = document.getElementById('chatMessages');
@@ -1491,7 +1690,7 @@
                     </div>
                 `;
             } else {
-                messagesContainer.innerHTML = messages.map(msg => `
+                messagesContainer.innerHTML = messages.map((msg, idx) => `
                     <div class="message ${msg.role}">
                         <div class="message-avatar" style="background: ${msg.role === 'user' ? getAvatarGradient('User') : getAvatarGradient(agent.name)}">
                             ${msg.role === 'user' ? 'U' : getInitials(agent.name)}
@@ -1500,14 +1699,67 @@
                             <div class="message-header">
                                 <span class="message-sender">${msg.role === 'user' ? 'You' : agent.name}</span>
                                 <span class="message-time">${formatTime(msg.timestamp)}</span>
+                                <button class="copy-btn" onclick="copyMessage(${idx})" title="Copy message">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
                             </div>
-                            <div class="message-bubble">${escapeHtml(msg.content)}</div>
+                            <div class="message-bubble">${formatMessage(msg.content)}</div>
                         </div>
                     </div>
                 `).join('');
+                
+                // Add copy functions to window
+                window.copyMessage = (idx) => {
+                    const msg = messages[idx];
+                    if (msg) {
+                        navigator.clipboard.writeText(msg.content);
+                        showToast('Message copied');
+                    }
+                };
             }
+            
+            // Update token counter
+            updateTokenCounter();
 
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function formatMessage(text) {
+            // Escape HTML first
+            let formatted = escapeHtml(text);
+            
+            // Convert code blocks (```code```)
+            formatted = formatted.replace(/```([\s\S]*?)```/g, '<pre class="code-block"><code>$1</code></pre>');
+            
+            // Convert inline code (`code`)
+            formatted = formatted.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+            
+            // Convert **bold**
+            formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+            
+            // Convert *italic*
+            formatted = formatted.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+            
+            // Convert newlines to <br>
+            formatted = formatted.replace(/\n/g, '<br>');
+            
+            return formatted;
+        }
+        
+        function updateTokenCounter() {
+            const counter = document.getElementById('tokenCounter');
+            if (!state.selectedAgentId) {
+                counter.textContent = '';
+                return;
+            }
+            const messages = state.conversations[state.selectedAgentId] || [];
+            const totalChars = messages.reduce((sum, m) => sum + m.content.length, 0);
+            // Rough estimate: ~4 chars per token for English
+            const estimatedTokens = Math.ceil(totalChars / 4);
+            counter.textContent = `~${estimatedTokens.toLocaleString()} tokens`;
         }
 
         function escapeHtml(text) {
@@ -1537,6 +1789,8 @@
                 name: '',
                 apiKey: '',
                 apiEndpoint: '',
+                model: '',
+                proxyEndpoint: '',
                 createdAt: Date.now()
             };
             state.settingsAgents.push(newAgent);
@@ -1805,6 +2059,80 @@
             }
         }
 
+        function exportChat() {
+            if (state.selectedAgentId) {
+                const agent = state.agents.find(a => a.id === state.selectedAgentId);
+                const messages = state.conversations[state.selectedAgentId] || [];
+                let content = `Insider AI - Chat Export\n`;
+                content += `Agent: ${agent?.name || 'Unknown'}\n`;
+                content += `Date: ${new Date().toLocaleString()}\n`;
+                content += `${'='.repeat(50)}\n\n`;
+                messages.forEach(m => {
+                    content += `[${m.role.toUpperCase()}]\n${m.content}\n\n`;
+                });
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `chat-${agent?.name || 'export'}-${Date.now()}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('Chat exported');
+            }
+        }
+
+        function exportAgents() {
+            const data = {
+                version: 1,
+                agents: state.settingsAgents.map(a => ({
+                    name: a.name,
+                    apiKey: a.apiKey,
+                    apiEndpoint: a.apiEndpoint,
+                    proxyEndpoint: a.proxyEndpoint,
+                    model: a.model
+                }))
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `insiderai-agents-${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Agents exported');
+        }
+
+        function importAgents(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.agents && Array.isArray(data.agents)) {
+                        data.agents.forEach(agentData => {
+                            const newAgent = {
+                                id: generateId(),
+                                name: agentData.name || '',
+                                apiKey: agentData.apiKey || '',
+                                apiEndpoint: agentData.apiEndpoint || '',
+                                proxyEndpoint: agentData.proxyEndpoint || '',
+                                model: agentData.model || '',
+                                createdAt: Date.now()
+                            };
+                            state.settingsAgents.push(newAgent);
+                        });
+                        saveSettings();
+                        renderSettingsAgents();
+                        showToast(`Imported ${data.agents.length} agent(s)`);
+                    } else {
+                        showToast('Invalid file format');
+                    }
+                } catch (err) {
+                    showToast('Failed to parse file');
+                }
+            };
+            reader.readAsText(file);
+        }
+
         // Event listeners
         document.getElementById('settingsBtn').addEventListener('click', openSettings);
         document.getElementById('closeSettingsBtn').addEventListener('click', closeSettings);
@@ -1813,9 +2141,34 @@
         document.getElementById('addAgentBtn').addEventListener('click', openSettings);
         document.getElementById('addAgentInSettingsBtn').addEventListener('click', addNewAgent);
         document.getElementById('clearChatBtn').addEventListener('click', clearChat);
-        document.getElementById('mobileToggle').addEventListener('click', () => {
-            document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('exportChatBtn').addEventListener('click', exportChat);
+        document.getElementById('mobileToggle').addEventListener('click', openSettings);
+
+        // Import/Export Agents
+        document.getElementById('exportAgentsBtn').addEventListener('click', exportAgents);
+        document.getElementById('importAgentsBtn').addEventListener('click', () => {
+            document.getElementById('importFileInput').click();
         });
+        document.getElementById('importFileInput').addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                importAgents(e.target.files[0]);
+                e.target.value = '';
+            }
+        });
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
 
         // Send button
         document.getElementById('sendBtn').addEventListener('click', sendMessage);
@@ -1826,6 +2179,16 @@
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
+            }
+            // Ctrl+Enter or Cmd+Enter for newline
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                const start = chatInput.selectionStart;
+                const end = chatInput.selectionEnd;
+                chatInput.value = chatInput.value.substring(0, start) + '\n' + chatInput.value.substring(end);
+                chatInput.selectionStart = chatInput.selectionEnd = start + 1;
+                chatInput.style.height = 'auto';
+                chatInput.style.height = Math.min(chatInput.scrollHeight, 200) + 'px';
             }
         });
 
@@ -1851,7 +2214,8 @@
                 name: 'OpenAI GPT-4',
                 apiKey: 'YOUR_API_KEY_HERE',
                 apiEndpoint: 'https://api.openai.com/v1/responses',
-                proxyEndpoint: ''
+                proxyEndpoint: '',
+                model: 'gpt-4o'
             };
             state.agents.push(openAIAgent);
             state.settingsAgents.push(openAIAgent);
